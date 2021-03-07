@@ -73,7 +73,7 @@ static std::tuple<fetchers::Tree, FlakeRef, FlakeRef> fetchOrSubstituteTree(
 
 static void forceTrivialValue(EvalState & state, Value & value, const Pos & pos)
 {
-    if (value.isThunk() && value.isTrivial())
+    // if (value.isThunk() && value.isTrivial())
         state.forceValue(value, pos);
 }
 
@@ -206,7 +206,7 @@ static Flake getFlake(
         throw Error("source tree referenced by '%s' does not contain a '%s/flake.nix' file", lockedRef, lockedRef.subdir);
 
     Value vInfo;
-    state.evalFile(flakeFile, vInfo, true); // FIXME: symlink attack
+    state.evalFile(flakeFile, vInfo); // FIXME: symlink attack
 
     expectType(state, nAttrs, vInfo, Pos(foFile, state.symbols.create(flakeFile), 0, 0));
 
